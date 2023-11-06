@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="projectService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="project_header" EntityType="projectService.project_header">
+                    <NavigationPropertyBinding Path="resource_calc" Target="resource_cal"/>
+                </EntitySet>
+                <EntitySet Name="grade" EntityType="projectService.grade"/>
+                <EntitySet Name="role" EntityType="projectService.role"/>
+                <EntitySet Name="resource_cal" EntityType="projectService.resource_cal">
+                    <NavigationPropertyBinding Path="project_id" Target="project_header"/>
+                </EntitySet>
+            </EntityContainer>
+            <EntityType Name="project_header">
+                <Key>
+                    <PropertyRef Name="project_id"/>
+                </Key>
+                <Property Name="project_id" Type="Edm.String" Nullable="false"/>
+                <Property Name="date_of_creation" Type="Edm.Date"/>
+                <Property Name="creator" Type="Edm.String"/>
+                <Property Name="project_desc" Type="Edm.String"/>
+                <Property Name="start_date" Type="Edm.Date"/>
+                <Property Name="end_date" Type="Edm.Date"/>
+                <NavigationProperty Name="resource_calc" Type="Collection(projectService.resource_cal)" Partner="project_id">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="grade">
+                <Key>
+                    <PropertyRef Name="role_code"/>
+                </Key>
+                <Property Name="role_code" Type="Edm.String" MaxLength="4" Nullable="false"/>
+                <Property Name="grade" Type="Edm.String" MaxLength="4"/>
+                <Property Name="grade_desc" Type="Edm.String"/>
+                <Property Name="rate" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="role">
+                <Key>
+                    <PropertyRef Name="role_code"/>
+                </Key>
+                <Property Name="role_code" Type="Edm.String" MaxLength="4" Nullable="false"/>
+                <Property Name="role_desc" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="resource_cal">
+                <Key>
+                    <PropertyRef Name="res_id"/>
+                </Key>
+                <Property Name="res_id" Type="Edm.String" Nullable="false"/>
+                <NavigationProperty Name="project_id" Type="projectService.project_header" Partner="resource_calc">
+                    <ReferentialConstraint Property="project_id_project_id" ReferencedProperty="project_id"/>
+                </NavigationProperty>
+                <Property Name="project_id_project_id" Type="Edm.String"/>
+                <Property Name="role" Type="Edm.String" MaxLength="4"/>
+                <Property Name="grade" Type="Edm.String" MaxLength="4"/>
+                <Property Name="rate" Type="Edm.Double"/>
+                <Property Name="data" Type="Edm.String"/>
+            </EntityType>
+            <Annotations Target="projectService.resource_cal/role">
+                <Annotation Term="Common.Text" Path="role">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Label" String="Role"/>
+                        <PropertyValue Property="CollectionPath" String="role"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="grade"/>
+                                    <PropertyValue Property="ValueListProperty" String="role_code"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="role_desc"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="projectService.resource_cal/grade">
+                <Annotation Term="Common.Text" Path="grade">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Label" String="Grade"/>
+                        <PropertyValue Property="CollectionPath" String="grade"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="grade"/>
+                                    <PropertyValue Property="ValueListProperty" String="grade"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="role_code"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="grade_desc"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="projectService.resource_cal/rate">
+                <Annotation Term="Common.Text" Path="role">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Label" String="Rate"/>
+                        <PropertyValue Property="CollectionPath" String="grade"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="rate"/>
+                                    <PropertyValue Property="ValueListProperty" String="rate"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="grade"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="grade_desc"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

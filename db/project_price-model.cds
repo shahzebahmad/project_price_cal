@@ -32,6 +32,7 @@ entity resource_cal {
     project_id      : Association to one project_header;
     role            : String(4);
     grade           : String(4);
+    rate            : Double;
     data            : LargeString;
 
 }

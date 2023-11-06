@@ -1,34 +1,43 @@
 {
-  "name": "project_price_cal",
-  "version": "1.0.0",
-  "description": "A simple CAP project.",
-  "repository": "<Add your repository here>",
-  "license": "UNLICENSED",
-  "private": true,
-  "dependencies": {
-    "@sap/cds": "^7",
-    "express": "^4",
-    "@sap/cds-hana": "^2"
-  },
-  "devDependencies": {
-    "@cap-js/sqlite": "^1",
-    "@sap/cds-dk": "^7",
-    "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
-    "@sap/hana-client": "^2.17.21",
-    "@sap/xsenv": "^3.4.0",
-    "@sap/xssec": "^3.2.17",
-    "hdb": "^0.19.5",
-    "passport": "^0.6.0"
-  },
-  "scripts": {
-    "start": "cds-serve"
-  },
-  "cds": {
-    "requires": {
-      "db": "hana-cloud"
+    "name": "project_price_cal",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^7",
+        "@sap/cds-hana": "^2",
+        "express": "^4"
     },
-    "hana": {
-      "deploy-format": "hdbtable"
-    }
-  }
+    "devDependencies": {
+        "@cap-js/sqlite": "^1",
+        "@sap/cds-dk": "^7",
+        "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
+        "@sap/hana-client": "^2.17.21",
+        "@sap/ux-specification": "^1.108.16",
+        "@sap/xsenv": "^3.4.0",
+        "@sap/xssec": "^3.2.17",
+        "hdb": "^0.19.5",
+        "passport": "^0.6.0",
+        "rimraf": "^3.0.2"
+    },
+    "scripts": {
+        "start": "cds-serve",
+        "watch-projectfep": "cds watch --open projectfep/webapp/index.html?sap-ui-xx-viewCache=false",
+        "undeploy": "cf undeploy project_price_cal --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    },
+    "cds": {
+        "requires": {
+            "db": "hana-cloud"
+        },
+        "hana": {
+            "deploy-format": "hdbtable"
+        }
+    },
+    "sapux": [
+        "app/projectfep"
+    ]
 }
