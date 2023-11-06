@@ -19,10 +19,12 @@ entity grade {
 
 entity project_header{
     key project_id      : String;
-    project_desc    : String;
-    start_date      : Date;
-    end_date        : Date;
-    resource_calc   : Composition of many resource_cal on resource_calc.project_id = $self
+    date_of_creation    : Date;
+    creator             : String;
+    project_desc        : String;
+    start_date          : Date;
+    end_date            : Date;
+    resource_calc       : Composition of many resource_cal on resource_calc.project_id = $self
 }
 
 entity resource_cal {
